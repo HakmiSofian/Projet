@@ -1,0 +1,317 @@
+open Directions;;
+module Images = Images50;;
+
+
+
+
+
+
+let kenny = Images.kenny;;
+let cartman = Images.cartman;;
+
+
+
+let tour = ref 0;;
+let scoreKenny,scorecartman = ref 0,ref 0;;
+
+(* Graphics.close_graph ();; *)
+Graphics.open_graph" 700x700";;
+Graphics.set_color (Graphics.rgb 100 40 50);;
+Graphics.fill_rect 0 0 700 700;;
+Graphics.set_color (Graphics.rgb 100 250 250);;
+let f i =
+  Graphics.draw_segments [|
+      (50*i,0,50*i,700);
+      (0,50*i,700,50*i)
+     |];
+in
+List.iter f [1;2;3;4;5;6;7;8;9;10;11;12;13];;
+
+Graphics.remember_mode false;;
+
+let afficher (img,x,y) (i,j) =
+  Dessiner.dessiner_image img (!i * 50 + x) (650 - !j * 50 +y);;
+
+
+let plainBlock = [(ref 4,ref 4);(ref 5,ref 4);(ref 6,ref 4);(ref 7,ref 4);(ref 8,ref 4);(ref 8,ref 5);(ref 4,ref 5);(ref 4, ref 6); (ref 4,ref 7);(ref 4,ref 8);(ref 8,ref 6);(ref 8,ref 7);(ref 8,ref 8);(ref 5,ref 8);(ref 6,ref 8);(ref 7,ref 8)];;
+let rampWest = [(ref 3, ref 4);(ref 3, ref 5);(ref 3, ref 6);(ref 3, ref 7);(ref 3, ref 8)];;
+let rampNord = [(ref 4, ref 3);(ref 5, ref 3);(ref 6, ref 3);(ref 7, ref 3);
+(ref 8, ref 3)];;
+let rampEst = [(ref 9, ref 4);(ref 9, ref 5);(ref 9, ref 6);(ref 9, ref 7);
+(ref 9, ref 8)];;
+let rampSud = [(ref 4,ref 9);(ref 5,ref 9);(ref 6,ref 9);(ref 7,ref 9);
+	       (ref 8,ref 9)];;
+let grassblock =[(ref 5,ref 5);(ref 6,ref 5);(ref 7,ref 5);(ref 5,ref 6);(ref 5,ref 7);(ref 7,ref 6);(ref 7,ref 7);(ref 6,ref 7)];;
+
+let water = [(ref 6,ref 6)];;
+
+
+let etoiles =  [(ref 1,ref 1);(ref 10,ref 10);(ref 9,ref 8);(ref 5,ref 4);(ref 7,ref 8)];;
+let lives = [];;(*[(ref 9,ref 8);(ref 5,ref 4);(ref 7,ref 8)];;*)
+let rocher =[(ref 1,ref 0);(ref 10,ref 2);(ref 9, ref 3);(ref 3, ref 3);(ref 9, ref 3);(ref 9, ref 9);(ref 3, ref 9);(ref 2, ref 7)];;           
+let piege =[(ref 7,ref 6)];;
+
+
+
+let kenny_i , kenny_j = ref 2, ref 5;;
+let cartman_i , cartman_j = ref 10,ref 9;;
+
+
+
+
+let augmenter_score score =
+  incr score;;
+
+
+let rec presence (l,e)=
+  if (l=[]) then false
+  else if (List.hd (l) = e) then true
+  else presence (List.tl (l),e);;
+
+let sur_le_sol (ri,rj) =
+  if( presence(plainBlock,(ri,rj))) then false
+  else  if( presence(rampNord,(ri,rj))) then false
+  else  if( presence(grassblock,(ri,rj))) then false
+  else  if( presence(water,(ri,rj))) then false
+  else  if( presence(rampWest,(ri,rj))) then false
+  else  if( presence(rampEst,(ri,rj))) then false
+  else  if( presence(rampSud,(ri,rj))) then false
+  else true
+;;
+
+
+
+
+let surelever_ou_pas img (ri,rj) =
+  if( presence(rampWest,(ri,rj)) || presence(rampNord,(ri,rj))|| presence(rampEst,(ri,rj))|| presence(rampSud,(ri,rj)) ) 
+  then ( afficher (img,0,20) (ri,rj)) 
+  else if ( presence(plainBlock,(ri,rj))|| presence(grassblock,(ri,rj)) ||presence(water,(ri,rj)))
+  then ( afficher (img,0,35) (ri,rj))
+  else
+  afficher (img,0,0) (ri,rj);;
+
+
+
+let afficher_decor () =  
+  Graphics.synchronize();;
+let afficher_perso() =
+
+  surelever_ou_pas kenny (kenny_i,kenny_j);
+  surelever_ou_pas cartman (cartman_i, cartman_j);;
+  
+
+let afficher_mobiles () =
+
+  List.iter (surelever_ou_pas Images.star) etoiles;
+  List.iter (surelever_ou_pas Images.heart) lives;
+
+  afficher_perso ();;
+
+let afficher_score() =
+  print_string " Score \n\n Kenny :"; print_int !scoreKenny;
+  print_string "\n\n cartman :";print_int !scorecartman;
+  print_string "\n\n\n";;
+
+let gagner () =
+  if ((!scoreKenny + !scorecartman) =(List.length etoiles))  then (
+    if( !scoreKenny > !scorecartman ) then(
+      print_string "\n\n\n\tKENNY A GAGNER !!!!!\n\n\n\t"
+    )
+    else if ( !scoreKenny = !scorecartman ) then
+      print_string "\n\n\n\tEGALITER !!!!!\n\n\n\t"
+    else 
+      print_string "\n\n\n\tcartman A GAGNER !!!!!\n\n\n\t"
+
+  )
+;;
+
+Graphics.remember_mode true;;
+ List.iter (afficher (Images.rampNord50,0,0)) rampNord;;
+ List.iter (afficher (Images.plainBlock,0,0)) plainBlock;;
+ List.iter (afficher (Images.grassblock,0,0)) grassblock;;
+ List.iter (afficher (Images.water,0,0)) water;;
+ List.iter (afficher (Images.rampWest50,0,0)) rampWest;;
+ List.iter (afficher (Images.rampEst,0,0)) rampEst;;
+ List.iter (afficher (Images.rampSud,0,0)) rampSud;;
+ List.iter (afficher (Images.rock,0,0)) rocher;;
+Graphics.remember_mode false;;
+
+
+
+
+
+
+
+let deplacer direction =
+
+  let verifier (mtni,mtnj) (prei,prej) =
+    if ( presence(rocher,(prei,prej)) ) then (false)
+    else if (((!kenny_i,!kenny_j) = (!prei,!prej)) || ((!cartman_i,!cartman_j)=(!prei,!prej))) then (false)
+    else if((presence(rampWest,(prei,prej))))then(
+                       if(  ( ((!prei,!prej) = (!mtni+1,!mtnj)) && (sur_le_sol (mtni,mtnj)))  ||
+                            (presence(plainBlock,(mtni,mtnj))) ||
+                            (presence(grassblock,(mtni,mtnj))) ||
+                            (presence(water,(mtni,mtnj))) ||
+                            (presence(rampWest,(mtni,mtnj))) ||
+                            (presence(rampEst,(mtni,mtnj)))
+                                                                
+		       )
+                                                   then(  true)
+                                                   else false)
+    else if((presence(rampNord,(prei,prej))))then(
+                       if(  ( ((!prei,!prej) = (!mtni,!mtnj+1)) && (sur_le_sol (mtni,mtnj)))  ||
+                            (presence(plainBlock,(mtni,mtnj))) ||
+                            (presence(grassblock,(mtni,mtnj))) ||
+                            (presence(water,(mtni,mtnj))) ||
+                            (presence(rampNord,(mtni,mtnj))) ||
+                            (presence(rampSud,(mtni,mtnj)))
+                                                                
+		       )
+                                                   then(  true)
+                                                   else false)
+    else if((presence(rampEst,(prei,prej))))then(
+                       if(  ( ((!prei,!prej) = (!mtni-1,!mtnj)) && (sur_le_sol (mtni,mtnj)))  ||
+                            (presence(plainBlock,(mtni,mtnj))) ||
+                            (presence(grassblock,(mtni,mtnj))) ||
+                            (presence(water,(mtni,mtnj))) ||
+                            (presence(rampEst,(mtni,mtnj))) ||
+                            (presence(rampWest,(mtni,mtnj)))
+                                                                
+		       )
+                                                   then(  true)
+                                                   else false)
+    else if((presence(rampSud,(prei,prej))))then(
+                       if(  ( ((!prei,!prej) = (!mtni,!mtnj-1)) && (sur_le_sol (mtni,mtnj)))  ||
+                            (presence(plainBlock,(mtni,mtnj))) ||
+                            (presence(grassblock,(mtni,mtnj))) ||
+                            (presence(water,(mtni,mtnj))) ||
+                            (presence(rampSud,(mtni,mtnj))) ||
+                            (presence(rampNord,(prei,prej))) 
+                                                                
+		       )
+                                                   then(  true)
+                                                   else false)
+    
+    else if( presence(plainBlock,(prei,prej)) || presence(grassblock,(prei,prej)) || presence(water,(prei,prej)) )
+         then( 
+	   if(     (presence(rampSud,(mtni,mtnj)))  ||
+                   (presence(rampNord,(prei,prej))) || 
+                   (presence(rampWest,(prei,prej))) ||
+                   (presence(rampEst,(prei,prej)))  ||
+                   (presence(plainBlock,(prei,prej))) ||
+                   (presence(grassblock,(prei,prej))) ||
+                   (presence(water,(prei,prej)))
+           )
+           then(  true)
+           else false
+	 )
+ 
+    else true
+  in
+
+  let exp = ref 0
+  
+  in
+  
+  let avancer (ri,rj)  =
+  	match direction with
+	  
+	| E -> if !ri < 13 then (exp := !ri+1 ;
+	                 if ( verifier (ri,rj) (exp , rj) ) 
+			 then (ri := !ri + 1)) 
+	       else ( exp := !ri+1 ;
+		 if (verifier (ri,rj) (exp , rj)) then (ri := 0)
+	       )
+	| O -> if !ri > 0 then (exp := !ri-1 ;
+	                 if ( verifier (ri,rj) (exp , rj) ) 
+			 then (ri := !ri - 1)) 
+	       else ( exp := !ri-1 ;
+		 if (verifier (ri,rj) (exp , rj)) then (ri := 13)
+	       )
+	| S -> if !rj < 13 then (exp := !rj+1 ;
+	                 if ( verifier (ri,rj) (ri , exp) ) 
+			 then (rj := !rj + 1)) 
+	       else ( exp := !rj+1 ;
+		 if (verifier (ri,rj) (ri , exp)) then (rj := 0)
+	       )
+	| N -> if !rj > 0 then (exp := !rj - 1 ;
+	                 if ( verifier (ri,rj) (ri , exp) ) 
+			 then (rj := !rj - 1)) 
+	       else ( exp := !rj - 1 ;
+		 if (verifier (ri,rj) (ri , exp)) then (rj := 13)
+	       )
+
+  in
+
+  
+  let () = 
+      if(!tour=0)then(
+	avancer (kenny_i,kenny_j) 
+      )
+      else(
+	avancer (cartman_i,cartman_j)
+
+     )
+	
+  in
+    
+  let ramasser_etoile (ri,rj) =
+
+    if (((!ri,!rj) = (!kenny_i,!kenny_j)) || ((!ri,!rj) = (!cartman_i,!cartman_j)) ) then(
+      begin
+        ri := -1;
+        rj := 9;
+	if (!tour=0) then augmenter_score scoreKenny
+	else augmenter_score scorecartman
+      end
+    )
+  in
+  List.iter ramasser_etoile etoiles;
+
+  
+  let ramasser_lives (ri,rj) =
+	if (((!ri,!rj) = (!kenny_i,!kenny_j)) || ((!ri,!rj) = (!cartman_i,!cartman_j)) ) then(
+	  begin
+            ri := -1;
+            rj := 9;
+	  end
+      )
+  in
+  List.iter ramasser_lives lives;
+
+
+
+
+
+
+  let changer_tour letour =
+    if (!letour=0) then ( incr letour) else (decr letour)
+  in
+  changer_tour tour;
+
+  gagner();
+  afficher_decor ();
+  afficher_mobiles ();;
+
+let jouer p = Interprete.run p deplacer;;
+
+let score ()  =  
+ afficher_score();;
+
+let quitter () =
+Graphics.close_graph();;
+  
+  
+
+List.length rocher;;
+
+
+print_string "          *** космонавт ***\n";;
+print_string "       Salut jeune astronaute\n";;
+print_string "\n";;
+print_string " ******   Tahar et Sofian   ******  ";;
+print_string " Crédit image : lostgarden.com et SouthPark\n";;
+
+
+
+afficher_mobiles ();;
