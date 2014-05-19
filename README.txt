@@ -1,6 +1,6 @@
 Hakmi Sofian, Tahar Si Ahmed
 
-
+Le programme ce trouve dans astro.ml
 
 
 Notre jeu, est un jeu, qui permet à deux joueurs de disputer une partie commune,
