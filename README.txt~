@@ -1,30 +1,24 @@
 Hakmi Sofian, Tahar Si Ahmed
 
+Le programme ce trouve dans astro.ml
 
 
-
-
-
-
-
-
-
-notre jeu, est une jeu, qui permet à deux joueurs de disputer une partie commune,
+Notre jeu, est un jeu, qui permet à deux joueurs de disputer une partie commune,
 chacun doit ramasser un nombre maximal d'etoiles, pour gagner la partie.
 
-au total, les deux joueurs, doivent disputer les 11 etoiles présentes sur le terrain, 
+Au total, les deux joueurs, doivent disputer les 11 etoiles présentes sur le terrain, 
 réparties, d'une maniere  équilibrée et qui ne favorise pas un des deux joueurs.
 
-les deux joueurs sont kenny et cartman, chacun a son role de jouer, s'il essaye d'effectuer
+Les deux joueurs sont kenny et cartman, chacun joue a tour de role, s'il essaye d'effectuer
 un mouvement impossible, il garde son tour jusqu'a qu'il reussisse a se deplacer.
 
-apart l'imppossibilte de se deplacer, tout les mouvements alternent les tours.
+Apart l'imppossibilte de se deplacer, tout les mouvements alternent le tours.
 
-dans le jeu, les deplacements sont reglés de sorte que, quand le joueur X est sur une case, 
+Dans le jeu, les deplacements sont reglés de sorte que, quand le joueur X est sur une case, 
 le joueur Y ne peux pas y etre au meme temps.
 
-quand le joueur est sur une rampe sud, il ne peut pas aller au nord, si la case sur laquelle 
-il devrait atterir ne contient pas ni de rampe ni de block plein.
+Un joueur ne peut faire que des déplacement logique. exemple être sur un bloc et vouloir 
+descendre sans passer par une ramp ceci n'est pas logique.
 
 Sur le terrain on a pu mettre une carré fermé par des rochers, et qui ne permettent pas 
 aux joueurs de les traverser, et qui contient des etoiles  , donc le joueur reussisssant 
@@ -33,7 +27,9 @@ a y parvenir,aura 5 etoiles d'avance, voir gagner la partie.
 pour acceder au carré precedent, il exite un passage secret, et unique, que le joueur 
 doit emprunter grace a un teleporteur qui aura le bout du tunnel dans le carré en question.
 
-quand un joueur est sur le téléporteur l'autre joueur se téléporte à sa case départ respective . s'il reussi a emprunter le passage secret, dans ce cas, il peut jouir du privilège des étoiles secrète. 
+quand un joueur est sur le téléporteur l'autre joueur se téléporte à sa case départ respective.
+s'il reussi a emprunter le passage secret, dans ce cas, il peut jouir du privilège des 
+étoiles secrète. 
 
 le joueur ne peut passer du sol a un block plein que en empruntant une rampe ascendante
 
