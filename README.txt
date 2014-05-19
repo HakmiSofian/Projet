@@ -1,5 +1,14 @@
 Hakmi Sofian, Tahar Si Ahmed
 
+
+
+
+
+
+
+
+
+
 notre jeu, est une jeu, qui permet à deux joueurs de disputer une partie commune,
 chacun doit ramasser un nombre maximal d'etoiles, pour gagner la partie.
 
@@ -32,5 +41,21 @@ le joueur ne peut aborder une rampe par les cote, elle est accessible que dans u
 
 une fois, sur un block plein ou sur une rampe, on ne peut descendre qu'en passant par 
 une rampe descendante.
+
+
+
+
+
+
+
+
+
+
+voilà la ligne de commande pour compiller le jeu:
+
+ocamlmktop directions.cmo interprete.cmo graphics.cma images50.cmo directions.ml interprete.ml images50.ml dessiner.ml astro.ml -o FlappyCandyAstroCrush
+
+
+
 
 
