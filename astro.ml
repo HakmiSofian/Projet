@@ -67,8 +67,8 @@ let selector =[(ref 12,ref 1)];;
 
 
 
-let kenny_i , kenny_j = ref 5, ref 4;;
-let cartman_i , cartman_j = ref 9,ref 9;;
+let kenny_i , kenny_j = ref 0, ref 0;;
+let cartman_i , cartman_j = ref 13,ref 13;;
 
 
 
