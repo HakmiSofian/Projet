@@ -67,8 +67,8 @@ let selector =[(ref 12,ref 1)];;
 
 
 
-let kenny_i , kenny_j = ref 0, ref 0;;
-let cartman_i , cartman_j = ref 12,ref 12;;
+let kenny_i , kenny_j = ref 5, ref 4;;
+let cartman_i , cartman_j = ref 9,ref 9;;
 
 
 
@@ -182,45 +182,45 @@ let deplacer direction =
     else if (((!kenny_i,!kenny_j) = (!prei,!prej)) || ((!cartman_i,!cartman_j)=(!prei,!prej))) then (print_string "\nImpossible ! Il y a un autre joueur.\n\n\t";false)
     else if((presence(rampWest,(prei,prej))))then(
                        if(  
-			   (((!prei,!prej) = (!mtni+1,!mtnj)) && (sur_le_sol (mtni,mtnj)))  ||
-                           (presence(plainBlock,(mtni,mtnj))) ||
-                           (presence(grassblock,(mtni,mtnj))) ||
-                           (presence(water,(mtni,mtnj))) ||
-                           (presence(rampWest,(mtni,mtnj))) ||
-                           (presence(rampEst,(mtni,mtnj)))
+			   (((!prei,!prej) = (!mtni+1,!mtnj)) && (sur_le_sol (mtni,mtnj)))               ||
+                           ( ( (!prei,!prej) = (!mtni-1,!mtnj) ) && (presence(plainBlock,(mtni,mtnj))) ) ||
+                           ( ( (!prei,!prej) = (!mtni-1,!mtnj) ) && (presence(grassblock,(mtni,mtnj))) ) ||
+                           ( ( (!prei,!prej) = (!mtni-1,!mtnj) ) && (presence(water,(mtni,mtnj))))       ||
+                           ( ( ((!prei,!prej) = (!mtni,!mtnj-1)) || ((!prei,!prej) = (!mtni,!mtnj+1)) ) && (presence(rampWest,(mtni,mtnj))))    ||
+                           ( ( (!prei,!prej) = (!mtni-1,!mtnj) ) && (presence(rampEst,(mtni,mtnj))))
                            
 		       )
                        then(  true)
                        else (print_string "\nTu ne peux pas passer par là ! cherche un autre chemin.\n\n\t";false))
     else if((presence(rampNord,(prei,prej))))then(
                        if(  ( ((!prei,!prej) = (!mtni,!mtnj+1)) && (sur_le_sol (mtni,mtnj)))  ||
-                            (presence(plainBlock,(mtni,mtnj))) ||
-                            (presence(grassblock,(mtni,mtnj))) ||
-                            (presence(water,(mtni,mtnj))) ||
-                            (presence(rampNord,(mtni,mtnj))) ||
-                            (presence(rampSud,(mtni,mtnj)))
+                            ( ( (!prei,!prej) = (!mtni,!mtnj-1) ) && (presence(plainBlock,(mtni,mtnj))))  ||
+                            ( ( (!prei,!prej) = (!mtni,!mtnj-1) ) && (presence(grassblock,(mtni,mtnj))))  ||
+                            ( ( (!prei,!prej) = (!mtni,!mtnj-1) ) && (presence(water,(mtni,mtnj))))            ||
+                            ( ( ((!prei,!prej) = (!mtni+1,!mtnj)) || ((!prei,!prej) = (!mtni-1,!mtnj)) ) && (presence(rampNord,(mtni,mtnj))))     ||
+                            ( ( (!prei,!prej) = (!mtni,!mtnj-1) ) && (presence(rampSud,(mtni,mtnj)))) 
                                                                 
 		       )
                                                    then(  true)
                                                    else false)
     else if((presence(rampEst,(prei,prej))))then(
                        if(  ( ((!prei,!prej) = (!mtni-1,!mtnj)) && (sur_le_sol (mtni,mtnj)))  ||
-                            (presence(plainBlock,(mtni,mtnj))) ||
-                            (presence(grassblock,(mtni,mtnj))) ||
-                            (presence(water,(mtni,mtnj))) ||
-                            (presence(rampEst,(mtni,mtnj))) ||
-                            (presence(rampWest,(mtni,mtnj)))
+                            ( ( (!prei,!prej) = (!mtni+1,!mtnj) ) && (presence(plainBlock,(mtni,mtnj)))) ||
+                            ( ( (!prei,!prej) = (!mtni+1,!mtnj) ) && (presence(grassblock,(mtni,mtnj)))) ||
+                            ( ( (!prei,!prej) = (!mtni+1,!mtnj) ) && (presence(water,(mtni,mtnj)))) ||
+                            ( ( ((!prei,!prej) = (!mtni,!mtnj-1)) || ((!prei,!prej) = (!mtni,!mtnj+1)) ) && (presence(rampEst,(mtni,mtnj)))) ||
+                            ( ( (!prei,!prej) = (!mtni+1,!mtnj) ) && (presence(rampWest,(mtni,mtnj))))
                                                                 
 		       )
                                                    then(  true)
                                                    else (print_string "\nTu ne peux pas passer par là ! cherche un autre chemin.\n\n\t";false))
     else if((presence(rampSud,(prei,prej))))then(
                        if(  ( ((!prei,!prej) = (!mtni,!mtnj-1)) && (sur_le_sol (mtni,mtnj)))  ||
-                            (presence(plainBlock,(mtni,mtnj))) ||
-                            (presence(grassblock,(mtni,mtnj))) ||
-                            (presence(water,(mtni,mtnj))) ||
-                            (presence(rampSud,(mtni,mtnj))) ||
-                            (presence(rampNord,(mtni,mtnj))) 
+                            ( ((!prei,!prej) = (!mtni,!mtnj+1)) && (presence(plainBlock,(mtni,mtnj)))) ||
+                            ( ((!prei,!prej) = (!mtni,!mtnj+1)) && (presence(grassblock,(mtni,mtnj)))) ||
+                            ( ((!prei,!prej) = (!mtni,!mtnj+1)) && (presence(water,(mtni,mtnj)))) ||
+                            ( ( ((!prei,!prej) = (!mtni+1,!mtnj)) || ((!prei,!prej) = (!mtni-1,!mtnj)) ) && (presence(rampSud,(mtni,mtnj)))) ||
+                            ( ((!prei,!prej) = (!mtni,!mtnj+1)) && (presence(rampNord,(mtni,mtnj)))) 
                                                                 
 		       )
                                                    then(  true)
@@ -229,10 +229,10 @@ let deplacer direction =
     else if( presence(plainBlock,(prei,prej)) || presence(grassblock,(prei,prej)) || presence(water,(prei,prej)) )
          then( 
 	   if(    
-	           (presence(rampSud,(mtni,mtnj)))  ||
-                   (presence(rampNord,(mtni,mtnj))) || 
-                   (presence(rampWest,(mtni,mtnj))) ||
-                   (presence(rampEst,(mtni,mtnj)))  ||
+	           ( ((!prei,!prej) = (!mtni,!mtnj-1)) &&(presence(rampSud,(mtni,mtnj))))  ||
+                   ( ((!prei,!prej) = (!mtni,!mtnj+1)) &&(presence(rampNord,(mtni,mtnj)))) || 
+                   ( ((!prei,!prej) = (!mtni+1,!mtnj)) && (presence(rampWest,(mtni,mtnj)))) ||
+                   ( ((!prei,!prej) = (!mtni-1,!mtnj)) && (presence(rampEst,(mtni,mtnj))))  ||
                    (presence(plainBlock,(mtni,mtnj))) ||
                    (presence(grassblock,(mtni,mtnj))) ||
                    (presence(water,(mtni,mtnj)))
