@@ -51,7 +51,15 @@ voilà la ligne de commande pour compiller le jeu:
 
 ocamlmktop directions.cmo interprete.cmo graphics.cma images50.cmo directions.ml interprete.ml images50.ml dessiner.ml astro.ml -o FlappyCandyAstroCrush
 
+puis :
+
+open Astro;;
+open Interprete;;
 
 
-
+et pour jouer :
+deplacement :
+jouer Est / Ouest / Sud / Nord;;
+voir le score du jeu :
+score();;
 
